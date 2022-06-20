@@ -17,13 +17,14 @@ jobs:
           let fs = require('fs');
           const output = JSON.parse(fs.readFileSync('html-proofer.json', 'utf-8'));
           let uploadResult = await github.rest.checks.create({
-            head_sha: context.sha,
+            head_sha: context.payload.pull_request.head.sha || context.sha,
             name: output.title,
             conclusion: 'neutral',
             status: 'completed',
             output,
             ...context.repo
           })
+          core.info(JSON.stringify(context.payload.pull_request))
           core.info(`Check run status: ${uploadResult.status}`)
           core.info(`Check run URL: ${uploadResult.data.url}`)
           core.info(`Check run HTML: ${uploadResult.data.html_url}`)
