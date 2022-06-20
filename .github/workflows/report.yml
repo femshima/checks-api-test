@@ -18,7 +18,7 @@ jobs:
           core.info(JSON.stringify(context))
           const output = JSON.parse(fs.readFileSync('html-proofer.json', 'utf-8'));
           let uploadResult = await github.rest.checks.create({
-            head_sha: context.payload.pull_request.head.sha || context.sha,
+            head_sha: context.payload.pull_request?.head?.sha || context.sha,
             name: output.title,
             conclusion: 'neutral',
             status: 'completed',
